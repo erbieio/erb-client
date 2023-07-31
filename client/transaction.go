@@ -4,22 +4,25 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/erbieio/erb-client/tools"
+	types2 "github.com/erbieio/erb-client/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/wormholes-org/wormholes-client/tools"
-	types2 "github.com/wormholes-org/wormholes-client/types"
 	"golang.org/x/xerrors"
 	"log"
 	"math/big"
 	"strings"
 )
 
+const TranPrefix = "erbie:"
+
 // NormalTransaction
-//	Parameter Description
-//  to 			Account address
-//  value		transaction amount
-//  data
+//
+//		Parameter Description
+//	 to 			Account address
+//	 value		transaction amount
+//	 data
 func (worm *Wormholes) NormalTransaction(to string, value int64, data string) (string, error) {
 	ctx := context.Background()
 	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
@@ -61,6 +64,7 @@ func (worm *Wormholes) NormalTransaction(to string, value int64, data string) (s
 }
 
 // Mint NFT user minting
+//
 //	Users can use this transaction to create an NFT on the wormholes chain
 //
 //	Parameter Description
@@ -104,7 +108,7 @@ func (worm *Wormholes) Mint(royalty uint32, metaURL string, exchanger string) (s
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 
 	tx := types.NewTransaction(nonce, account, big.NewInt(0), gasLimit, gasPrice, tx_data)
 	chainID, err := worm.NetworkID(ctx)
@@ -127,7 +131,8 @@ func (worm *Wormholes) Mint(royalty uint32, metaURL string, exchanger string) (s
 }
 
 // Transfer NFT transfer
-// 	Change ownership of NFTs
+//
+//	Change ownership of NFTs
 //
 //	Parameter Description
 //	wormAddress: "0x8000000000000000000000000000000000000001",  worm address, the format is a decimal string, when it is SNFT, the length can be less than 42 (including 0x), representing the synthesized SNFT
@@ -170,7 +175,7 @@ func (worm *Wormholes) Transfer(wormAddress, to string) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 
 	fmt.Println(string(tx_data))
 
@@ -237,7 +242,7 @@ func (worm *Wormholes) Author(wormAddress, to string) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 
 	fmt.Println(string(tx_data))
 
@@ -304,7 +309,7 @@ func (worm *Wormholes) AuthorRevoke(wormAddress, to string) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	tx := types.NewTransaction(nonce, toAddr, big.NewInt(0), gasLimit, gasPrice, tx_data)
@@ -328,6 +333,7 @@ func (worm *Wormholes) AuthorRevoke(wormAddress, to string) (string, error) {
 }
 
 // AccountAuthor
+//
 //	Authorize all NFTs under an account to the exchange
 //	Parameter Description
 //	to:     "0x814920c33b1a037F91a16B126282155c6F92A10F",							Licensee's address
@@ -364,7 +370,7 @@ func (worm *Wormholes) AccountAuthor(to string) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	tx := types.NewTransaction(nonce, toAddr, big.NewInt(0), gasLimit, gasPrice, tx_data)
@@ -388,6 +394,7 @@ func (worm *Wormholes) AccountAuthor(to string) (string, error) {
 }
 
 // AccountAuthorRevoke
+//
 //	Cancel all NFT authorizations under an account
 //
 //	Parameter Description
@@ -425,7 +432,7 @@ func (worm *Wormholes) AccountAuthorRevoke(to string) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	tx := types.NewTransaction(nonce, toAddr, big.NewInt(0), gasLimit, gasPrice, tx_data)
@@ -449,6 +456,7 @@ func (worm *Wormholes) AccountAuthorRevoke(to string) (string, error) {
 }
 
 // SNFTToERB
+//
 //	Convert NFT fragments mined by miners to ERB
 //
 //	Parameter Description
@@ -456,7 +464,7 @@ func (worm *Wormholes) AccountAuthorRevoke(to string) (string, error) {
 //
 //	The exchange price corresponding to the synthesis level
 //	0: 100000000000000000
-// 	1: 150000000000000000
+//	1: 150000000000000000
 //	2: 225000000000000000
 //	3: 300000000000000000
 func (worm *Wormholes) SNFTToERB(wormAddress string) (string, error) {
@@ -492,7 +500,7 @@ func (worm *Wormholes) SNFTToERB(wormAddress string) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	tx := types.NewTransaction(nonce, account, big.NewInt(0), gasLimit, gasPrice, tx_data)
@@ -516,6 +524,7 @@ func (worm *Wormholes) SNFTToERB(wormAddress string) (string, error) {
 }
 
 // SNFTPledge
+//
 //	When a user wants to become a miner, he needs to do an ERB pledge transaction first to pledge the ERB needed to become a miner
 func (worm *Wormholes) SNFTPledge(snftAddress string) (string, error) {
 	ctx := context.Background()
@@ -546,7 +555,7 @@ func (worm *Wormholes) SNFTPledge(snftAddress string) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
@@ -572,6 +581,7 @@ func (worm *Wormholes) SNFTPledge(snftAddress string) (string, error) {
 }
 
 // SNFTRevokesPledge
+//
 //	When the user does not want to be a miner, or no longer wants to pledge so much ERB, he can do ERB to revoke the pledge
 func (worm *Wormholes) SNFTRevokesPledge(snftaAddress string) (string, error) {
 	ctx := context.Background()
@@ -602,7 +612,7 @@ func (worm *Wormholes) SNFTRevokesPledge(snftaAddress string) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
@@ -629,6 +639,7 @@ func (worm *Wormholes) SNFTRevokesPledge(snftaAddress string) (string, error) {
 }
 
 // TokenPledge
+//
 //	When a user wants to become a miner, he needs to do an ERB pledge transaction first to pledge the ERB needed to become a miner
 func (worm *Wormholes) TokenPledge(proxySign []byte, proxyAddress string, value int64) (string, error) {
 	ctx := context.Background()
@@ -660,7 +671,7 @@ func (worm *Wormholes) TokenPledge(proxySign []byte, proxyAddress string, value 
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
@@ -686,6 +697,7 @@ func (worm *Wormholes) TokenPledge(proxySign []byte, proxyAddress string, value 
 }
 
 // TokenRevokesPledge
+//
 //	When the user does not want to be a miner, or no longer wants to pledge so much ERB, he can do ERB to revoke the pledge
 func (worm *Wormholes) TokenRevokesPledge(value int64) (string, error) {
 	ctx := context.Background()
@@ -715,7 +727,7 @@ func (worm *Wormholes) TokenRevokesPledge(value int64) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
@@ -742,6 +754,7 @@ func (worm *Wormholes) TokenRevokesPledge(value int64) (string, error) {
 }
 
 // Open
+//
 //	This transaction can be initiated when a user wants to open an exchange
 //
 //	Parameter Description
@@ -779,7 +792,7 @@ func (worm *Wormholes) Open(feeRate uint32, name, url string) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
@@ -806,6 +819,7 @@ func (worm *Wormholes) Open(feeRate uint32, name, url string) (string, error) {
 }
 
 // Close
+//
 //	When the user does not want to continue to open an exchange, he can initiate this transaction to close the opened exchange
 func (worm *Wormholes) Close() (string, error) {
 	ctx := context.Background()
@@ -835,7 +849,7 @@ func (worm *Wormholes) Close() (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	tx := types.NewTransaction(nonce, account, big.NewInt(0), gasLimit, gasPrice, tx_data)
@@ -859,6 +873,7 @@ func (worm *Wormholes) Close() (string, error) {
 }
 
 // TransactionNFT
+//
 //	For buying and selling NFTs that have been minted, the transaction originator can be an exchange or a seller
 //
 //	Parameter Description
@@ -919,7 +934,7 @@ func (worm *Wormholes) TransactionNFT(buyer []byte, to string) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	value, _ := hexutil.DecodeBig(buyers.Amount)
@@ -945,6 +960,7 @@ func (worm *Wormholes) TransactionNFT(buyer []byte, to string) (string, error) {
 }
 
 // BuyerInitiatingTransaction
+//
 //	Used to buy and sell NFTs that have been minted, the transaction initiator is the buyer
 //
 //	Parameter Description
@@ -988,7 +1004,7 @@ func (worm *Wormholes) BuyerInitiatingTransaction(seller1 []byte) (string, error
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	value, _ := hexutil.DecodeBig(seller1s.Amount)
@@ -1013,6 +1029,7 @@ func (worm *Wormholes) BuyerInitiatingTransaction(seller1 []byte) (string, error
 }
 
 // FoundryTradeBuyer
+//
 //	For buying and selling unminted NFTs, the transaction originator is the buyer
 //
 //	Parameter Description
@@ -1062,7 +1079,7 @@ func (worm *Wormholes) FoundryTradeBuyer(seller2 []byte) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	value, _ := hexutil.DecodeBig(seller2s.Amount)
@@ -1087,6 +1104,7 @@ func (worm *Wormholes) FoundryTradeBuyer(seller2 []byte) (string, error) {
 }
 
 // FoundryExchange
+//
 //	For buying and selling unminted NFTs, the transaction originator is the exchange, or the seller
 //
 //	Parameter Description
@@ -1163,7 +1181,7 @@ func (worm *Wormholes) FoundryExchange(buyer, seller2 []byte, to string) (string
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	value, _ := hexutil.DecodeBig(buyers.Amount)
@@ -1188,6 +1206,7 @@ func (worm *Wormholes) FoundryExchange(buyer, seller2 []byte, to string) (string
 }
 
 // NftExchangeMatch
+//
 //	It is used to buy and sell NFTs that have been minted. The transaction originator is the exchange. This transaction is used when exchange A authorizes another exchange B, and exchange B initiates the transaction.
 //
 //	Parameter Description
@@ -1263,7 +1282,7 @@ func (worm *Wormholes) NftExchangeMatch(buyer, seller, exchangerAuth []byte, to 
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	value, _ := hexutil.DecodeBig(buyers.Amount)
@@ -1288,6 +1307,7 @@ func (worm *Wormholes) NftExchangeMatch(buyer, seller, exchangerAuth []byte, to 
 }
 
 // FoundryExchangeInitiated
+//
 //	It is used to buy and sell unminted NFTs. The transaction originator is the exchange. The transaction is used when exchange A authorizes another exchange B, and exchange B initiates the transaction
 //
 //	Parameter Description
@@ -1388,7 +1408,7 @@ func (worm *Wormholes) FoundryExchangeInitiated(buyer, seller2, exchangerAuth []
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	value, _ := hexutil.DecodeBig(buyers.Amount)
@@ -1413,6 +1433,7 @@ func (worm *Wormholes) FoundryExchangeInitiated(buyer, seller2, exchangerAuth []
 }
 
 // NFTDoesNotAuthorizeExchanges
+//
 //	Used to buy and sell NFTs that have been minted, the transaction originator is the exchange, and the transaction is used when the NFT is not authorized to the exchange
 //
 //	Parameter Description
@@ -1483,7 +1504,7 @@ func (worm *Wormholes) NFTDoesNotAuthorizeExchanges(buyer, seller1 []byte, to st
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	value, _ := hexutil.DecodeBig(buyers.Amount)
@@ -1508,6 +1529,7 @@ func (worm *Wormholes) NFTDoesNotAuthorizeExchanges(buyer, seller1 []byte, to st
 }
 
 // AdditionalPledgeAmount
+//
 //	The amount used by the exchange to increase the pledged ERB
 //
 //	Parameter Description
@@ -1539,7 +1561,7 @@ func (worm *Wormholes) AdditionalPledgeAmount(value int64) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	additional := big.NewInt(value)
@@ -1564,6 +1586,7 @@ func (worm *Wormholes) AdditionalPledgeAmount(value int64) (string, error) {
 }
 
 // RevokesPledgeAmount
+//
 //	Amount used for exchanges to reduce the amount of staked ERB
 //
 //	Parameter Description
@@ -1595,7 +1618,7 @@ func (worm *Wormholes) RevokesPledgeAmount(value int64) (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	revokes := big.NewInt(value)
@@ -1620,6 +1643,7 @@ func (worm *Wormholes) RevokesPledgeAmount(value int64) (string, error) {
 }
 
 // VoteOfficialNFT
+//
 //	This transaction is used to inject NFT fragments that can be mined by miners. Only official accounts can do this transaction
 //
 //	Parameter Descriptiom
@@ -1665,7 +1689,7 @@ func (worm *Wormholes) VoteOfficialNFT(dir, startIndex string, number uint64, ro
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	tx := types.NewTransaction(nonce, account, big.NewInt(0), gasLimit, gasPrice, tx_data)
@@ -1689,15 +1713,16 @@ func (worm *Wormholes) VoteOfficialNFT(dir, startIndex string, number uint64, ro
 }
 
 // VoteOfficialNFTByApprovedExchanger
-//	This transaction is used to inject NFT fragments that can be mined by miners. Only official accounts can do this transaction
 //
-//	Parameter Descriptiom
-//	dir:        "wormholes",  													The path address where sworm is located, the format is a string
-//	startIndex: "0x640001",	 														The start number of the sworm fragment, formatted as a hexadecimal string
-//	number:     6553600,														The number of sworm shards injected, formatted as a decimal string
-//	royalty:    20,																			Royalty, formatted as an integer
-//  exchanger:	{"exchanger_owner":"0x83c43f6F7bB4d8E429b21FF303a16b4c99A59b05","to":"0xB685EB3226d5F0D549607D2cC18672b756fd090c","block_number":"0x0","sig":"0xae18a165e51e322d04d2862b6e2760d0493b58870f9afe3c6d15b6e44145c293075662043611501c89d3e4b299a21fe1f8581def86cce4dd43b20c47960ac2481c"}
-//	creator:    "0xab7624f47fd7dadb6b8e255d06a2f10af55990fe",	creator, format is a hex string
+//		This transaction is used to inject NFT fragments that can be mined by miners. Only official accounts can do this transaction
+//
+//		Parameter Descriptiom
+//		dir:        "wormholes",  													The path address where sworm is located, the format is a string
+//		startIndex: "0x640001",	 														The start number of the sworm fragment, formatted as a hexadecimal string
+//		number:     6553600,														The number of sworm shards injected, formatted as a decimal string
+//		royalty:    20,																			Royalty, formatted as an integer
+//	 exchanger:	{"exchanger_owner":"0x83c43f6F7bB4d8E429b21FF303a16b4c99A59b05","to":"0xB685EB3226d5F0D549607D2cC18672b756fd090c","block_number":"0x0","sig":"0xae18a165e51e322d04d2862b6e2760d0493b58870f9afe3c6d15b6e44145c293075662043611501c89d3e4b299a21fe1f8581def86cce4dd43b20c47960ac2481c"}
+//		creator:    "0xab7624f47fd7dadb6b8e255d06a2f10af55990fe",	creator, format is a hex string
 func (worm *Wormholes) VoteOfficialNFTByApprovedExchanger(dir, startIndex string, number uint64, royalty uint32, creator string, exchangerAuth []byte) (string, error) {
 	err := tools.CheckAddress("VoteOfficialNFTByApprovedExchanger() creator", creator)
 	if err != nil {
@@ -1743,7 +1768,7 @@ func (worm *Wormholes) VoteOfficialNFTByApprovedExchanger(dir, startIndex string
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	tx := types.NewTransaction(nonce, account, big.NewInt(0), gasLimit, gasPrice, tx_data)
@@ -1767,6 +1792,7 @@ func (worm *Wormholes) VoteOfficialNFTByApprovedExchanger(dir, startIndex string
 }
 
 // UnforzenAccount
+//
 //	change revenue model
 func (worm *Wormholes) UnforzenAccount() (string, error) {
 	ctx := context.Background()
@@ -1796,7 +1822,7 @@ func (worm *Wormholes) UnforzenAccount() (string, error) {
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	tx := types.NewTransaction(nonce, account, nil, gasLimit, gasPrice, tx_data)
@@ -1819,8 +1845,8 @@ func (worm *Wormholes) UnforzenAccount() (string, error) {
 	return strings.ToLower(signedTx.Hash().String()), nil
 }
 
-//AccountDelegate
-//Delegate large accounts to small accounts
+// AccountDelegate
+// Delegate large accounts to small accounts
 // Parameter Description
 // proxyAddress:		0xe61e5Bbe724B8F449B5C7BB4a09F99A057253eB4
 func (worm *Wormholes) AccountDelegate(proxySign []byte, proxyAddress string) (string, error) {
@@ -1853,7 +1879,7 @@ func (worm *Wormholes) AccountDelegate(proxySign []byte, proxyAddress string) (s
 		return "", err
 	}
 
-	tx_data := append([]byte("wormholes:"), data...)
+	tx_data := append([]byte(TranPrefix), data...)
 	fmt.Println(string(tx_data))
 
 	tx := types.NewTransaction(nonce, account, big.NewInt(0), gasLimit, gasPrice, tx_data)

@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/wormholes-org/wormholes-client/tools"
+	"github.com/erbieio/erb-client/tools"
 	"testing"
 )
 
@@ -28,7 +28,7 @@ func TestToHex16(t *testing.T) {
 //}
 
 func TestPriKeyToAddress(t *testing.T) {
-	priKey := "87ff9ec48300e8df51cdf5cf92197629f02b7b4c3f2c19b8a7882b41d9791a4e"
+	priKey := "7c6786275d6011adb6288587757653d3f9061275bafc2c35ae62efe0bc4973e9"
 	accoount, fromKey, _ := tools.PriKeyToAddress(priKey)
 	fmt.Println(accoount)
 	fmt.Println(fromKey)

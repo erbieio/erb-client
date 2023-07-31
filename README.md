@@ -3,7 +3,7 @@
 - ## Install
 
 ```go
-go get github.com/wormholes-org/wormholes-client
+go get github.com/erbieio/erb-client
 ```
 
 - ## Client
@@ -23,7 +23,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
       )
       
       const (
@@ -68,7 +68,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -116,7 +116,7 @@ go get github.com/wormholes-org/wormholes-client
           ```
           package main
           import (
-              "github.com/wormholes-org/wormholes-client/client"
+              "github.com/erbieio/erb-client/client"
               "fmt"
           )
           
@@ -162,7 +162,7 @@ go get github.com/wormholes-org/wormholes-client
           ```
           package main
           import (
-              "github.com/wormholes-org/wormholes-client/client"
+              "github.com/erbieio/erb-client/client"
               "fmt"
           )
           
@@ -206,7 +206,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -250,7 +250,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -291,7 +291,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -331,7 +331,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -371,7 +371,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-           "github.com/wormholes-org/wormholes-client/client"
+           "github.com/erbieio/erb-client/client"
            "fmt"
       )
       
@@ -412,7 +412,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -451,7 +451,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -490,7 +490,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -529,7 +529,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-         "github.com/wormholes-org/wormholes-client/client"
+         "github.com/erbieio/erb-client/client"
          "fmt"
       )
       
@@ -564,7 +564,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -599,7 +599,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -640,7 +640,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -675,7 +675,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -718,7 +718,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -758,7 +758,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
     
@@ -798,7 +798,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -838,7 +838,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -879,7 +879,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -920,7 +920,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -962,7 +962,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -1003,7 +1003,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -1042,7 +1042,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -1081,7 +1081,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-          "github.com/wormholes-org/wormholes-client/client"
+          "github.com/erbieio/erb-client/client"
           "fmt"
       )
       
@@ -1123,7 +1123,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-        "github.com/wormholes-org/wormholes-client/client"
+        "github.com/erbieio/erb-client/client"
         "fmt"
       )
       
@@ -1166,7 +1166,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-           "github.com/wormholes-org/wormholes-client/client"
+           "github.com/erbieio/erb-client/client"
            "fmt"
       )
       
@@ -1201,7 +1201,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-         "github.com/wormholes-org/wormholes-client/client"
+         "github.com/erbieio/erb-client/client"
          "fmt"
       )
       
@@ -1240,7 +1240,7 @@ go get github.com/wormholes-org/wormholes-client
       ```
       package main
       import (
-       "github.com/wormholes-org/wormholes-client/client"
+       "github.com/erbieio/erb-client/client"
        "fmt"
       )
       
