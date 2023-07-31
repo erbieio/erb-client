@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/wormholes-org/wormholes-client/client"
+	"github.com/erbieio/erb-client/client"
 	"math/rand"
 	"testing"
 	"time"
