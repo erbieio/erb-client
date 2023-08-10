@@ -1,18 +1,17 @@
 # Introduction
 
-- ## Install
+## Install
 
 ```go
 go get github.com/erbieio/erb-client
 ```
 
-- ## Client
+## Client
 
     - ### Create a client
 
-      Initializing the wormholes client with Go is the basic steps required to interact with the blockchain.
-      Import the wormholes-org/wormholes-client package and initialize it by calling the receiving blockchain service provider
-      rawurl
+      Initializing the erbie client with Go is the basic steps required to interact with the blockchain.
+      Import the erbieio/erb-client package and initialize it by calling the receiving blockchain service provider rawurl.
 
       ```
       worm := client.NewClient(priKey, rawurl)
@@ -272,7 +271,7 @@ go get github.com/erbieio/erb-client
       Mint(royalty uint32, metaURL string, exchanger string) (string, error)
       ```
 
-      Implement NFT minting, create an NFT on the wormholes chain
+      Implement NFT minting, create an NFT on the ErbieChain
 
       **Params**
 
@@ -614,83 +613,7 @@ go get github.com/erbieio/erb-client
           fmt.Println(rs) //0xcbd19c386d8b5944d4a88017680239651edefc527e4ba2c8762ab0df2333a7ca
       }
       ```
-
-    - ### Open
-
-      ```
-        Open(feeRate uint32, name, url string) (string, error)
-      ```
-
-      When a user wants to open an exchange, an exchange can be created
-
-      **Params**
-
-      > - *feeRate                  The exchange rate, the format is an integer type*
-      > - *name                      Exchange name, formatted as a string*
-      > - **url                           Exchange server address, the format is a string*
-
-      **Return**
-
-      `string`  - If the transaction is successful, return the hash of the transaction; if the transaction fails, return nil
-
-      `error`   - If the transaction is successful, return nil; if the transaction fails, return the corresponding error
-
-      **Example**
-
-      ```
-      package main
-      import (
-          "github.com/erbieio/erb-client/client"
-          "fmt"
-      )
       
-      const (
-          endpoint = "http://192.168.4.237:8574"
-          priKey   = "b2ebd0889351eb22dc73c3a02c63e783794a9de3f578d6d07bb370cc112d2ec7"
-      )
-      
-      func main() {
-          worm := client.NewClient(priKey, endpoint)
-          rs, _ := worm.Open(10,"wormholes","www.kang123456.com")
-          fmt.Println(rs) //0xcccd6c9499224e7d216f3bd230447900550b07345841eebd2e62b613f7bd924f
-      }
-      ```
-
-    - ### Close
-
-      ```
-       close() (string, error)
-      ```
-
-      The transaction is used to close the exchange
-
-      **Return**
-
-      `string`  - If the transaction is successful, return the hash of the transaction; if the transaction fails, return nil
-
-      `error`   - If the transaction is successful, return nil; if the transaction fails, return the corresponding error
-
-      **Example**
-
-      ```
-      package main
-      import (
-          "github.com/erbieio/erb-client/client"
-          "fmt"
-      )
-      
-      const (
-          endpoint = "http://192.168.4.237:8574"
-          priKey   = "b2ebd0889351eb22dc73c3a02c63e783794a9de3f578d6d07bb370cc112d2ec7"
-      )
-      
-      func main() {
-          worm := client.NewClient(priKey, endpoint)
-          rs, _ := worm.Close()
-          fmt.Println(rs) //0x7d5b3653b67d298e7cce82b92fa720224e93941315528ef19a36c4daf1efe929
-      }
-      ```
-
     - ### InsertNFTBlock
 
       ```
@@ -729,7 +652,7 @@ go get github.com/erbieio/erb-client
     
       func main() {
           worm := client.NewClient(priKey, endpoint)
-          rs, _ := worm.InsertNFTBlock("wormholes2", "0x640001", 6553600, 20, "0xEaE404DCa7c22A15A59f63002Df54BBb8D90c5FB")
+          rs, _ := worm.InsertNFTBlock("erbie2", "0x640001", 6553600, 20, "0xEaE404DCa7c22A15A59f63002Df54BBb8D90c5FB")
           fmt.Println(rs) //0x61cd018d6e70af47c6204fea18db5b33fdecc92162cca66b0089783733809e84
       }
       ```
@@ -1134,7 +1057,7 @@ go get github.com/erbieio/erb-client
     
       func main() {
         worm := client.NewClient(priKey, endpoint)
-        rs, _ := worm.VoteOfficialNFT("wormholes2", "0x640001", 6553600, 20, "0xEaE404DCa7c22A15A59f63002Df54BBb8D90c5FB")
+        rs, _ := worm.VoteOfficialNFT("erbie2", "0x640001", 6553600, 20, "0xEaE404DCa7c22A15A59f63002Df54BBb8D90c5FB")
         fmt.Println(rs) //0x61cd018d6e70af47c6204fea18db5b33fdecc92162cca66b0089783733809e84
       }
       ```
@@ -1177,7 +1100,7 @@ go get github.com/erbieio/erb-client
     
       func main() {
            worm := client.NewClient(priKey, endpoint)
-           rs, _ := worm.VoteOfficialNFTByApprovedExchanger("wormholes2", "0x640001", 6553600, 20, "0xab7624f47fd7dadb6b8e255d06a2f10af55990fe", exchangeAuth)
+           rs, _ := worm.VoteOfficialNFTByApprovedExchanger("erbie2", "0x640001", 6553600, 20, "0xab7624f47fd7dadb6b8e255d06a2f10af55990fe", exchangeAuth)
            fmt.Println(rs)
       }
       ```
