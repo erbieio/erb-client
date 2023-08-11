@@ -16,8 +16,8 @@ const (
 	SNFTRevokesPledge
 	TokenPledge
 	TokenRevokesPledge
-	Open
-	Close
+	_
+	_
 	_
 	TransactionNFT
 	BuyerInitiatingTransaction
@@ -31,10 +31,10 @@ const (
 	VoteOfficialNFT
 	VoteOfficialNFTByApprovedExchanger
 	UnforzenAccount
-	_
-	_
-	_
-	_
+	WeightRedemption
+	BatchSellTransfer
+	ForceBuyingTransfer
+	ExtractERB
 	_
 	AccountDelegate
 )
@@ -56,12 +56,26 @@ type Transaction struct {
 	Buyer         *Buyer         `json:"buyer,omitempty"`
 	Seller1       *Seller1       `json:"seller1,omitempty"`
 	Seller2       *Seller2       `json:"seller2,omitempty"`
+	BuyerAuth     *Buyauth       `json:"buyer_auth,omitempty"`
+	SellerAuth    *Sellerauth    `json:"seller_auth,omitempty"`
 	ExchangerAuth *ExchangerAuth `json:"exchanger_auth,omitempty"`
 	Creator       string         `json:"creator,omitempty"`
 	RewardFlag    int            `json:"reward_flag,omitempty"`
 	ProxyAddress  string         `json:"proxy_address,omitempty"`
 	ProxySign     string         `json:"proxy_sign,omitempty"`
 	Version       string         `json:"version"`
+}
+
+type Buyauth struct {
+	Exchanger   string `json:"exchanger,omitempty"`
+	BlockNumber string `json:"block_number,omitempty"`
+	Sig         string `json:"sig,omitempty"`
+}
+
+type Sellerauth struct {
+	Exchanger   string `json:"exchanger,omitempty"`
+	BlockNumber string `json:"block_number,omitempty"`
+	Sig         string `json:"sig,omitempty"`
 }
 
 type Buyer struct {

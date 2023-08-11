@@ -526,122 +526,122 @@ func (worm *Wormholes) SNFTToERB(wormAddress string) (string, error) {
 // SNFTPledge
 //
 //	When a user wants to become a miner, he needs to do an ERB pledge transaction first to pledge the ERB needed to become a miner
-func (worm *Wormholes) SNFTPledge(snftAddress string) (string, error) {
-	ctx := context.Background()
-	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
-	if err != nil {
-		log.Println("TokenPledge() priKeyToAddress err ", err)
-		return "", err
-	}
-
-	nonce, err := worm.PendingNonceAt(ctx, account)
-
-	gasLimit := uint64(70000)
-	gasPrice, err := worm.SuggestGasPrice(ctx)
-	if err != nil {
-		log.Println("TokenPledge() suggestGasPrice err ", err)
-		return "", err
-	}
-
-	transaction := types2.Transaction{
-		Type:       types2.SNFTPledge,
-		NFTAddress: snftAddress,
-		Version:    types2.WormHolesVersion,
-	}
-
-	data, err := json.Marshal(transaction)
-	if err != nil {
-		log.Println("TokenPledge() failed to format wormholes data")
-		return "", err
-	}
-
-	tx_data := append([]byte(TranPrefix), data...)
-	fmt.Println(string(tx_data))
-
-	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
-	pledge := new(big.Int).Mul(big.NewInt(100000), wei)
-	tx := types.NewTransaction(nonce, account, pledge, gasLimit, gasPrice, tx_data)
-	chainID, err := worm.NetworkID(ctx)
-	if err != nil {
-		log.Println("TokenPledge() networkID err=", err)
-		return "", err
-	}
-	log.Println("chainID=", chainID)
-	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromKey)
-	if err != nil {
-		log.Println("TokenPledge() signTx err ", err)
-		return "", err
-	}
-	err = worm.SendTransaction(ctx, signedTx)
-	if err != nil {
-		log.Println("TokenPledge() sendTransaction err ", err)
-		return "", err
-	}
-	return strings.ToLower(signedTx.Hash().String()), nil
-}
+//func (worm *Wormholes) SNFTPledge(snftAddress string) (string, error) {
+//	ctx := context.Background()
+//	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
+//	if err != nil {
+//		log.Println("TokenPledge() priKeyToAddress err ", err)
+//		return "", err
+//	}
+//
+//	nonce, err := worm.PendingNonceAt(ctx, account)
+//
+//	gasLimit := uint64(70000)
+//	gasPrice, err := worm.SuggestGasPrice(ctx)
+//	if err != nil {
+//		log.Println("TokenPledge() suggestGasPrice err ", err)
+//		return "", err
+//	}
+//
+//	transaction := types2.Transaction{
+//		Type:       types2.SNFTPledge,
+//		NFTAddress: snftAddress,
+//		Version:    types2.WormHolesVersion,
+//	}
+//
+//	data, err := json.Marshal(transaction)
+//	if err != nil {
+//		log.Println("TokenPledge() failed to format wormholes data")
+//		return "", err
+//	}
+//
+//	tx_data := append([]byte(TranPrefix), data...)
+//	fmt.Println(string(tx_data))
+//
+//	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
+//	pledge := new(big.Int).Mul(big.NewInt(100000), wei)
+//	tx := types.NewTransaction(nonce, account, pledge, gasLimit, gasPrice, tx_data)
+//	chainID, err := worm.NetworkID(ctx)
+//	if err != nil {
+//		log.Println("TokenPledge() networkID err=", err)
+//		return "", err
+//	}
+//	log.Println("chainID=", chainID)
+//	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromKey)
+//	if err != nil {
+//		log.Println("TokenPledge() signTx err ", err)
+//		return "", err
+//	}
+//	err = worm.SendTransaction(ctx, signedTx)
+//	if err != nil {
+//		log.Println("TokenPledge() sendTransaction err ", err)
+//		return "", err
+//	}
+//	return strings.ToLower(signedTx.Hash().String()), nil
+//}
 
 // SNFTRevokesPledge
 //
 //	When the user does not want to be a miner, or no longer wants to pledge so much ERB, he can do ERB to revoke the pledge
-func (worm *Wormholes) SNFTRevokesPledge(snftaAddress string) (string, error) {
-	ctx := context.Background()
-	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
-	if err != nil {
-		log.Println("TokenRevokesPledge() priKeyToAddress err ", err)
-		return "", err
-	}
-
-	nonce, err := worm.PendingNonceAt(ctx, account)
-
-	gasLimit := uint64(50000)
-	gasPrice, err := worm.SuggestGasPrice(ctx)
-	if err != nil {
-		log.Println("TokenRevokesPledge() suggestGasPrice err ", err)
-		return "", err
-	}
-
-	transaction := types2.Transaction{
-		Type:       types2.SNFTRevokesPledge,
-		NFTAddress: snftaAddress,
-		Version:    types2.WormHolesVersion,
-	}
-
-	data, err := json.Marshal(transaction)
-	if err != nil {
-		log.Println("TokenRevokesPledge() failed to format wormholes data")
-		return "", err
-	}
-
-	tx_data := append([]byte(TranPrefix), data...)
-	fmt.Println(string(tx_data))
-
-	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
-	pledge := new(big.Int).Mul(big.NewInt(100000), wei)
-
-	tx := types.NewTransaction(nonce, account, pledge, gasLimit, gasPrice, tx_data)
-	chainID, err := worm.NetworkID(ctx)
-	if err != nil {
-		log.Println("TokenRevokesPledge() networkID err=", err)
-		return "", err
-	}
-	log.Println("chainID=", chainID)
-	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromKey)
-	if err != nil {
-		log.Println("TokenRevokesPledge() signTx err ", err)
-		return "", err
-	}
-	err = worm.SendTransaction(ctx, signedTx)
-	if err != nil {
-		log.Println("TokenRevokesPledge() sendTransaction err ", err)
-		return "", err
-	}
-	return strings.ToLower(signedTx.Hash().String()), nil
-}
+//func (worm *Wormholes) SNFTRevokesPledge(snftaAddress string) (string, error) {
+//	ctx := context.Background()
+//	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
+//	if err != nil {
+//		log.Println("TokenRevokesPledge() priKeyToAddress err ", err)
+//		return "", err
+//	}
+//
+//	nonce, err := worm.PendingNonceAt(ctx, account)
+//
+//	gasLimit := uint64(50000)
+//	gasPrice, err := worm.SuggestGasPrice(ctx)
+//	if err != nil {
+//		log.Println("TokenRevokesPledge() suggestGasPrice err ", err)
+//		return "", err
+//	}
+//
+//	transaction := types2.Transaction{
+//		Type:       types2.SNFTRevokesPledge,
+//		NFTAddress: snftaAddress,
+//		Version:    types2.WormHolesVersion,
+//	}
+//
+//	data, err := json.Marshal(transaction)
+//	if err != nil {
+//		log.Println("TokenRevokesPledge() failed to format wormholes data")
+//		return "", err
+//	}
+//
+//	tx_data := append([]byte(TranPrefix), data...)
+//	fmt.Println(string(tx_data))
+//
+//	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
+//	pledge := new(big.Int).Mul(big.NewInt(100000), wei)
+//
+//	tx := types.NewTransaction(nonce, account, pledge, gasLimit, gasPrice, tx_data)
+//	chainID, err := worm.NetworkID(ctx)
+//	if err != nil {
+//		log.Println("TokenRevokesPledge() networkID err=", err)
+//		return "", err
+//	}
+//	log.Println("chainID=", chainID)
+//	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromKey)
+//	if err != nil {
+//		log.Println("TokenRevokesPledge() signTx err ", err)
+//		return "", err
+//	}
+//	err = worm.SendTransaction(ctx, signedTx)
+//	if err != nil {
+//		log.Println("TokenRevokesPledge() sendTransaction err ", err)
+//		return "", err
+//	}
+//	return strings.ToLower(signedTx.Hash().String()), nil
+//}
 
 // TokenPledge
 //
 //	When a user wants to become a miner, he needs to do an ERB pledge transaction first to pledge the ERB needed to become a miner
-func (worm *Wormholes) TokenPledge(proxySign []byte, proxyAddress string, value int64) (string, error) {
+func (worm *Wormholes) TokenPledge(toaddress common.Address, proxyAddress, name, url string, value int64, feerate int) (string, error) {
 	ctx := context.Background()
 	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
 	if err != nil {
@@ -661,7 +661,9 @@ func (worm *Wormholes) TokenPledge(proxySign []byte, proxyAddress string, value 
 	transaction := types2.Transaction{
 		Type:         types2.TokenPledge,
 		ProxyAddress: proxyAddress,
-		ProxySign:    string(proxySign),
+		FeeRate:      uint32(feerate),
+		Name:         name,
+		Url:          url,
 		Version:      types2.WormHolesVersion,
 	}
 
@@ -676,7 +678,7 @@ func (worm *Wormholes) TokenPledge(proxySign []byte, proxyAddress string, value 
 
 	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
 	pledge := new(big.Int).Mul(big.NewInt(value), wei)
-	tx := types.NewTransaction(nonce, account, pledge, gasLimit, gasPrice, tx_data)
+	tx := types.NewTransaction(nonce, toaddress, pledge, gasLimit, gasPrice, tx_data)
 	chainID, err := worm.NetworkID(ctx)
 	if err != nil {
 		log.Println("TokenPledge() networkID err=", err)
@@ -699,7 +701,7 @@ func (worm *Wormholes) TokenPledge(proxySign []byte, proxyAddress string, value 
 // TokenRevokesPledge
 //
 //	When the user does not want to be a miner, or no longer wants to pledge so much ERB, he can do ERB to revoke the pledge
-func (worm *Wormholes) TokenRevokesPledge(value int64) (string, error) {
+func (worm *Wormholes) TokenRevokesPledge(toaddress common.Address, value int64) (string, error) {
 	ctx := context.Background()
 	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
 	if err != nil {
@@ -733,7 +735,7 @@ func (worm *Wormholes) TokenRevokesPledge(value int64) (string, error) {
 	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
 	pledge := new(big.Int).Mul(big.NewInt(value), wei)
 
-	tx := types.NewTransaction(nonce, account, pledge, gasLimit, gasPrice, tx_data)
+	tx := types.NewTransaction(nonce, toaddress, pledge, gasLimit, gasPrice, tx_data)
 	chainID, err := worm.NetworkID(ctx)
 	if err != nil {
 		log.Println("TokenRevokesPledge() networkID err=", err)
@@ -761,116 +763,116 @@ func (worm *Wormholes) TokenRevokesPledge(value int64) (string, error) {
 //	feeRate:   10,																		  The exchange rate, the format is an integer type
 //	name:      "wormholes",										 Exchange name, formatted as a string
 //	url:       "www.kang123456.com",		Exchange server address, formatted as a string
-func (worm *Wormholes) Open(feeRate uint32, name, url string) (string, error) {
-	ctx := context.Background()
-	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
-	if err != nil {
-		log.Println("Open() priKeyToAddress err ", err)
-		return "", err
-	}
-
-	nonce, err := worm.PendingNonceAt(ctx, account)
-
-	gasLimit := uint64(60000)
-	gasPrice, err := worm.SuggestGasPrice(ctx)
-	if err != nil {
-		log.Println("Open() suggestGasPrice err ", err)
-		return "", err
-	}
-
-	transaction := types2.Transaction{
-		Type:    types2.Open,
-		FeeRate: feeRate,
-		Name:    name,
-		Url:     url,
-		Version: types2.WormHolesVersion,
-	}
-
-	data, err := json.Marshal(transaction)
-	if err != nil {
-		log.Println("Open() failed to format wormholes data")
-		return "", err
-	}
-
-	tx_data := append([]byte(TranPrefix), data...)
-	fmt.Println(string(tx_data))
-
-	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
-	amount := new(big.Int).Mul(big.NewInt(100), wei)
-
-	tx := types.NewTransaction(nonce, account, amount, gasLimit, gasPrice, tx_data)
-	chainID, err := worm.NetworkID(ctx)
-	if err != nil {
-		log.Println("open() networkID err=", err)
-		return "", err
-	}
-	log.Println("chainID=", chainID)
-	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromKey)
-	if err != nil {
-		log.Println("open() signTx err ", err)
-		return "", err
-	}
-	err = worm.SendTransaction(ctx, signedTx)
-	if err != nil {
-		log.Println("open() sendTransaction err ", err)
-		return "", err
-	}
-	return strings.ToLower(signedTx.Hash().String()), nil
-}
+//func (worm *Wormholes) Open(feeRate uint32, name, url string) (string, error) {
+//	ctx := context.Background()
+//	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
+//	if err != nil {
+//		log.Println("Open() priKeyToAddress err ", err)
+//		return "", err
+//	}
+//
+//	nonce, err := worm.PendingNonceAt(ctx, account)
+//
+//	gasLimit := uint64(60000)
+//	gasPrice, err := worm.SuggestGasPrice(ctx)
+//	if err != nil {
+//		log.Println("Open() suggestGasPrice err ", err)
+//		return "", err
+//	}
+//
+//	transaction := types2.Transaction{
+//		Type:    types2.Open,
+//		FeeRate: feeRate,
+//		Name:    name,
+//		Url:     url,
+//		Version: types2.WormHolesVersion,
+//	}
+//
+//	data, err := json.Marshal(transaction)
+//	if err != nil {
+//		log.Println("Open() failed to format wormholes data")
+//		return "", err
+//	}
+//
+//	tx_data := append([]byte(TranPrefix), data...)
+//	fmt.Println(string(tx_data))
+//
+//	wei, _ := new(big.Int).SetString("1000000000000000000", 10)
+//	amount := new(big.Int).Mul(big.NewInt(100), wei)
+//
+//	tx := types.NewTransaction(nonce, account, amount, gasLimit, gasPrice, tx_data)
+//	chainID, err := worm.NetworkID(ctx)
+//	if err != nil {
+//		log.Println("open() networkID err=", err)
+//		return "", err
+//	}
+//	log.Println("chainID=", chainID)
+//	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromKey)
+//	if err != nil {
+//		log.Println("open() signTx err ", err)
+//		return "", err
+//	}
+//	err = worm.SendTransaction(ctx, signedTx)
+//	if err != nil {
+//		log.Println("open() sendTransaction err ", err)
+//		return "", err
+//	}
+//	return strings.ToLower(signedTx.Hash().String()), nil
+//}
 
 // Close
 //
 //	When the user does not want to continue to open an exchange, he can initiate this transaction to close the opened exchange
-func (worm *Wormholes) Close() (string, error) {
-	ctx := context.Background()
-	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
-	if err != nil {
-		log.Println("close() priKeyToAddress err ", err)
-		return "", err
-	}
-
-	nonce, err := worm.PendingNonceAt(ctx, account)
-
-	gasLimit := uint64(60000)
-	gasPrice, err := worm.SuggestGasPrice(ctx)
-	if err != nil {
-		log.Println("close() suggestGasPrice err ", err)
-		return "", err
-	}
-
-	transaction := types2.Transaction{
-		Type:    types2.Close,
-		Version: types2.WormHolesVersion,
-	}
-
-	data, err := json.Marshal(transaction)
-	if err != nil {
-		log.Println("close() failed to format wormholes data")
-		return "", err
-	}
-
-	tx_data := append([]byte(TranPrefix), data...)
-	fmt.Println(string(tx_data))
-
-	tx := types.NewTransaction(nonce, account, big.NewInt(0), gasLimit, gasPrice, tx_data)
-	chainID, err := worm.NetworkID(ctx)
-	if err != nil {
-		log.Println("close networkID err=", err)
-		return "", err
-	}
-	log.Println("chainID=", chainID)
-	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromKey)
-	if err != nil {
-		log.Println("close() signTx err ", err)
-		return "", err
-	}
-	err = worm.SendTransaction(ctx, signedTx)
-	if err != nil {
-		log.Println("close() sendTransaction err ", err)
-		return "", err
-	}
-	return strings.ToLower(signedTx.Hash().String()), nil
-}
+//func (worm *Wormholes) Close() (string, error) {
+//	ctx := context.Background()
+//	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
+//	if err != nil {
+//		log.Println("close() priKeyToAddress err ", err)
+//		return "", err
+//	}
+//
+//	nonce, err := worm.PendingNonceAt(ctx, account)
+//
+//	gasLimit := uint64(60000)
+//	gasPrice, err := worm.SuggestGasPrice(ctx)
+//	if err != nil {
+//		log.Println("close() suggestGasPrice err ", err)
+//		return "", err
+//	}
+//
+//	transaction := types2.Transaction{
+//		Type:    types2.Close,
+//		Version: types2.WormHolesVersion,
+//	}
+//
+//	data, err := json.Marshal(transaction)
+//	if err != nil {
+//		log.Println("close() failed to format wormholes data")
+//		return "", err
+//	}
+//
+//	tx_data := append([]byte(TranPrefix), data...)
+//	fmt.Println(string(tx_data))
+//
+//	tx := types.NewTransaction(nonce, account, big.NewInt(0), gasLimit, gasPrice, tx_data)
+//	chainID, err := worm.NetworkID(ctx)
+//	if err != nil {
+//		log.Println("close networkID err=", err)
+//		return "", err
+//	}
+//	log.Println("chainID=", chainID)
+//	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromKey)
+//	if err != nil {
+//		log.Println("close() signTx err ", err)
+//		return "", err
+//	}
+//	err = worm.SendTransaction(ctx, signedTx)
+//	if err != nil {
+//		log.Println("close() sendTransaction err ", err)
+//		return "", err
+//	}
+//	return strings.ToLower(signedTx.Hash().String()), nil
+//}
 
 // TransactionNFT
 //
@@ -1840,6 +1842,322 @@ func (worm *Wormholes) UnforzenAccount() (string, error) {
 	err = worm.SendTransaction(ctx, signedTx)
 	if err != nil {
 		log.Println("VoteOfficialNFTByApprovedExchanger() sendTransaction err ", err)
+		return "", err
+	}
+	return strings.ToLower(signedTx.Hash().String()), nil
+}
+
+// WeightRedemption
+//
+// When the user's weight is lower than 70, this transaction can be sent to restore the weight
+func (worm *Wormholes) WeightRedemption() (string, error) {
+	ctx := context.Background()
+	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
+	if err != nil {
+		log.Println("WeightRedemption() priKeyToAddress err ", err)
+		return "", err
+	}
+
+	nonce, err := worm.PendingNonceAt(ctx, account)
+
+	gasLimit := uint64(50000)
+	gasPrice, err := worm.SuggestGasPrice(ctx)
+	if err != nil {
+		log.Println("ASuggestGasPrice err ", err)
+		return "", err
+	}
+
+	transaction := types2.Transaction{
+		Type:    types2.WeightRedemption,
+		Version: types2.WormHolesVersion,
+	}
+
+	data, err := json.Marshal(transaction)
+	if err != nil {
+		log.Println("WeightRedemption() failed to format erbie data")
+		return "", err
+	}
+
+	tx_data := append([]byte(TranPrefix), data...)
+	fmt.Println(string(tx_data))
+
+	tx := types.NewTransaction(nonce, account, nil, gasLimit, gasPrice, tx_data)
+	chainID, err := worm.NetworkID(ctx)
+	if err != nil {
+		log.Println("WeightRedemption() networkID err=", err)
+		return "", err
+	}
+	log.Println("chainID=", chainID)
+	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromKey)
+	if err != nil {
+		log.Println("WeightRedemption() signTx err ", err)
+		return "", err
+	}
+	err = worm.SendTransaction(ctx, signedTx)
+	if err != nil {
+		log.Println("WeightRedemption() sendTransaction err ", err)
+		return "", err
+	}
+	return strings.ToLower(signedTx.Hash().String()), nil
+}
+
+// BatchSellTransfer
+//
+// Batch buying and selling of minted NFT or S-Nft
+func (worm *Wormholes) BatchSellTransfer(buyer, seller, buyerAuth, sellerAuth, exchangerAuth []byte, to string) (string, error) {
+	err := tools.CheckAddress("BatchSellTransfer() to", to)
+	if err != nil {
+		return "", err
+	}
+	toAddr := common.HexToAddress(to)
+
+	var buyers types2.Buyer
+	err = json.Unmarshal(buyer, &buyers)
+	if err != nil {
+		return "", xerrors.New("the formate of buyer is wrong")
+	}
+	err = tools.CheckHex("buyers.BlockNumber", buyers.BlockNumber)
+	if err != nil {
+		return "", err
+	}
+
+	var sellers types2.Seller1
+	err = json.Unmarshal(seller, &sellers)
+	if err != nil {
+		return "", xerrors.New("the formate of sellers is wrong")
+	}
+	err = tools.CheckHex("sellers.BlockNumber", sellers.BlockNumber)
+	if err != nil {
+		return "", err
+	}
+
+	var buyerAuths types2.Buyauth
+	err = json.Unmarshal(buyerAuth, &buyerAuths)
+	if err != nil {
+		return "", xerrors.New("the formate of buyerAuths is wrong")
+	}
+	err = tools.CheckHex("buyerAuths.BlockNumber", buyerAuths.BlockNumber)
+	if err != nil {
+		return "", err
+	}
+
+	var sellerAuths types2.Sellerauth
+	err = json.Unmarshal(sellerAuth, &sellerAuths)
+	if err != nil {
+		return "", xerrors.New("the formate of sellerAuths is wrong")
+	}
+	err = tools.CheckHex("sellerAuths.BlockNumber", sellerAuths.BlockNumber)
+	if err != nil {
+		return "", err
+	}
+
+	var exchangeAuths types2.ExchangerAuth
+	err = json.Unmarshal(exchangerAuth, &exchangeAuths)
+	if err != nil {
+		return "", xerrors.New("BatchSellTransfer() the formate of exchangerAuth is wrong")
+	}
+	err = tools.CheckHex("exchangeAuths.BlockNumber", exchangeAuths.BlockNumber)
+	if err != nil {
+		return "", err
+	}
+
+	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
+	if err != nil {
+		log.Println("BatchSellTransfer() priKeyToAddress err ", err)
+		return "", err
+	}
+
+	ctx := context.Background()
+	nonce, err := worm.PendingNonceAt(ctx, account)
+
+	gasLimit := uint64(200000)
+	gasPrice, err := worm.SuggestGasPrice(ctx)
+	if err != nil {
+		log.Println("BatchSellTransfer() suggestGasPrice err ", err)
+		return "", err
+	}
+
+	transaction := types2.Transaction{
+		Type:          types2.BatchSellTransfer,
+		Buyer:         &buyers,
+		BuyerAuth:     &buyerAuths,
+		SellerAuth:    &sellerAuths,
+		Seller1:       &sellers,
+		ExchangerAuth: &exchangeAuths,
+		Version:       types2.WormHolesVersion,
+	}
+	data, err := json.Marshal(transaction)
+	if err != nil {
+		fmt.Println("BatchSellTransfer() failed to format wormholes data")
+		return "", err
+	}
+
+	tx_data := append([]byte(TranPrefix), data...)
+	fmt.Println(string(tx_data))
+
+	value, _ := hexutil.DecodeBig(buyers.Amount)
+	tx := types.NewTransaction(nonce, toAddr, value, gasLimit, gasPrice, tx_data)
+	chainID, err := worm.NetworkID(ctx)
+	if err != nil {
+		log.Println("BatchSellTransfer() networkID err=", err)
+		return "", err
+	}
+	log.Println("chainID=", chainID)
+	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromKey)
+	if err != nil {
+		log.Println("BatchSellTransfer signTx err ", err)
+		return "", err
+	}
+	err = worm.SendTransaction(ctx, signedTx)
+	if err != nil {
+		log.Println("BatchSellTransfer sendTransaction err ", err)
+		return "", err
+	}
+	return strings.ToLower(signedTx.Hash().String()), nil
+}
+
+// ForceBuyingTransfer
+//
+// Compulsory purchase of S-Nft
+func (worm *Wormholes) ForceBuyingTransfer(buyer, buyerAuth, exchangerAuth []byte, to string) (string, error) {
+	err := tools.CheckAddress("ForceBuyingTransfer() to", to)
+	if err != nil {
+		return "", err
+	}
+	toAddr := common.HexToAddress(to)
+
+	var buyers types2.Buyer
+	err = json.Unmarshal(buyer, &buyers)
+	if err != nil {
+		return "", xerrors.New("the formate of buyer is wrong")
+	}
+	err = tools.CheckHex("buyers.BlockNumber", buyers.BlockNumber)
+	if err != nil {
+		return "", err
+	}
+
+	var buyerAuths types2.Buyauth
+	err = json.Unmarshal(buyerAuth, &buyerAuths)
+	if err != nil {
+		return "", xerrors.New("the formate of buyerAuths is wrong")
+	}
+	err = tools.CheckHex("buyerAuths.BlockNumber", buyerAuths.BlockNumber)
+	if err != nil {
+		return "", err
+	}
+
+	var exchangeAuths types2.ExchangerAuth
+	err = json.Unmarshal(exchangerAuth, &exchangeAuths)
+	if err != nil {
+		return "", xerrors.New("ForceBuyingTransfer() the formate of exchangerAuth is wrong")
+	}
+	err = tools.CheckHex("exchangeAuths.BlockNumber", exchangeAuths.BlockNumber)
+	if err != nil {
+		return "", err
+	}
+
+	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
+	if err != nil {
+		log.Println("ForceBuyingTransfer() priKeyToAddress err ", err)
+		return "", err
+	}
+
+	ctx := context.Background()
+	nonce, err := worm.PendingNonceAt(ctx, account)
+
+	gasLimit := uint64(200000)
+	gasPrice, err := worm.SuggestGasPrice(ctx)
+	if err != nil {
+		log.Println("ForceBuyingTransfer() suggestGasPrice err ", err)
+		return "", err
+	}
+
+	transaction := types2.Transaction{
+		Type:          types2.ForceBuyingTransfer,
+		Buyer:         &buyers,
+		BuyerAuth:     &buyerAuths,
+		ExchangerAuth: &exchangeAuths,
+		Version:       types2.WormHolesVersion,
+	}
+	data, err := json.Marshal(transaction)
+	if err != nil {
+		fmt.Println("ForceBuyingTransfer() failed to format wormholes data")
+		return "", err
+	}
+
+	tx_data := append([]byte(TranPrefix), data...)
+	fmt.Println(string(tx_data))
+
+	value, _ := hexutil.DecodeBig(buyers.Amount)
+	tx := types.NewTransaction(nonce, toAddr, value, gasLimit, gasPrice, tx_data)
+	chainID, err := worm.NetworkID(ctx)
+	if err != nil {
+		log.Println("ForceBuyingTransfer() networkID err=", err)
+		return "", err
+	}
+	log.Println("chainID=", chainID)
+	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromKey)
+	if err != nil {
+		log.Println("ForceBuyingTransfer signTx err ", err)
+		return "", err
+	}
+	err = worm.SendTransaction(ctx, signedTx)
+	if err != nil {
+		log.Println("ForceBuyingTransfer sendTransaction err ", err)
+		return "", err
+	}
+	return strings.ToLower(signedTx.Hash().String()), nil
+}
+
+// ExtractERB
+//
+// Addresses with L3 can initiate this transaction to withdraw ERB
+func (worm *Wormholes) ExtractERB() (string, error) {
+	ctx := context.Background()
+	account, fromKey, err := tools.PriKeyToAddress(worm.priKey)
+	if err != nil {
+		log.Println("ExtractERB() priKeyToAddress err ", err)
+		return "", err
+	}
+
+	nonce, err := worm.PendingNonceAt(ctx, account)
+
+	gasLimit := uint64(50000)
+	gasPrice, err := worm.SuggestGasPrice(ctx)
+	if err != nil {
+		log.Println("ASuggestGasPrice err ", err)
+		return "", err
+	}
+
+	transaction := types2.Transaction{
+		Type:    types2.ExtractERB,
+		Version: types2.WormHolesVersion,
+	}
+
+	data, err := json.Marshal(transaction)
+	if err != nil {
+		log.Println("ExtractERB() failed to format erbie data")
+		return "", err
+	}
+
+	tx_data := append([]byte(TranPrefix), data...)
+	fmt.Println(string(tx_data))
+
+	tx := types.NewTransaction(nonce, account, nil, gasLimit, gasPrice, tx_data)
+	chainID, err := worm.NetworkID(ctx)
+	if err != nil {
+		log.Println("ExtractERB() networkID err=", err)
+		return "", err
+	}
+	log.Println("chainID=", chainID)
+	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), fromKey)
+	if err != nil {
+		log.Println("ExtractERB() signTx err ", err)
+		return "", err
+	}
+	err = worm.SendTransaction(ctx, signedTx)
+	if err != nil {
+		log.Println("ExtractERB() sendTransaction err ", err)
 		return "", err
 	}
 	return strings.ToLower(signedTx.Hash().String()), nil

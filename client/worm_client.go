@@ -316,6 +316,22 @@ func (worm *Wormholes) GetAccountInfo(ctx context.Context, address string, block
 	return r, err
 }
 
+func GetLatestAccountInfo2(nftaddr string) (*types2.Account, error) {
+	client, err := rpc.Dial("https://api.wormholes.com")
+	if err != nil {
+		log.Println("GetLatestAccountInfo() err=", err)
+		return nil, err
+	}
+	defer client.Close()
+	var result types2.Account
+	err = client.CallContext(context.Background(), &result, "eth_getAccountInfo", nftaddr, "latest")
+	if err != nil {
+		log.Println("GetLatestAccountInfo() err=", err)
+		return nil, err
+	}
+	return &result, err
+}
+
 func (worm *Wormholes) GetBlockBeneficiaryAddressByNumber(ctx context.Context, block int64) (*types2.BeneficiaryAddressList, error) {
 	blockNumber := rpc.BlockNumber(block)
 	var r *types2.BeneficiaryAddressList
@@ -384,6 +400,36 @@ func (w *Wallet) SignBuyer(amount, nftAddress, exchanger, blockNumber, seller st
 		Exchanger:   exchanger,
 		BlockNumber: blockNumber,
 		Seller:      seller,
+		Sig:         hexutil.Encode(signature),
+	}
+
+	result, err := json.Marshal(buyer)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// SignBuyerAuth
+// exchanger: The exchange on which the transaction took place, formatted as a decimal string
+// blockNumber: Block height, which means that this transaction is valid before this height, the format is a hexadecimal string
+func (w *Wallet) SignBuyerAuth(exchanger, blockNumber string) ([]byte, error) {
+	key, err := crypto.HexToECDSA(w.priKey)
+	if err != nil {
+		return nil, err
+	}
+
+	msg := exchanger + blockNumber
+	signature, err := crypto.Sign(tools.SignHash([]byte(msg)), key)
+	if err != nil {
+		return nil, err
+	}
+
+	signature[64] += 27
+
+	buyer := types2.Buyauth{
+		Exchanger:   exchanger,
+		BlockNumber: blockNumber,
 		Sig:         hexutil.Encode(signature),
 	}
 
@@ -464,6 +510,37 @@ func (w *Wallet) SignSeller2(amount, royalty, metaURL, exclusiveFlag, exchanger,
 	}
 
 	result, err := json.Marshal(seller2)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// SignSellerAuth
+//
+//	exchanger:	The exchange on which the transaction took place, formatted as a decimal string
+//	blockNumber: Block height, which means that this transaction is valid before this height, the format is a hexadecimal string
+func (w *Wallet) SignSellerAuth(exchanger, blockNumber string) ([]byte, error) {
+	key, err := crypto.HexToECDSA(w.priKey)
+	if err != nil {
+		return nil, err
+	}
+
+	msg := exchanger + blockNumber
+	signature, err := crypto.Sign(tools.SignHash([]byte(msg)), key)
+	if err != nil {
+		return nil, err
+	}
+
+	signature[64] += 27
+
+	seller1 := types2.Sellerauth{
+		Exchanger:   exchanger,
+		BlockNumber: blockNumber,
+		Sig:         hexutil.Encode(signature),
+	}
+
+	result, err := json.Marshal(seller1)
 	if err != nil {
 		return nil, err
 	}

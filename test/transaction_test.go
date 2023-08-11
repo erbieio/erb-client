@@ -15,16 +15,21 @@ import (
 
 const (
 	//endpoint         = "http://192.168.4.223:8560"
-	endpoint         = "http://43.129.181.130:8561"
-	priKey           = "7c6786275d6011adb6288587757653d3f9061275bafc2c35ae62efe0bc4973e9"
-	buyerPriKey      = "f616c4d20311a2e73c67ef334630f834b7fb42304a1d4448fb2058e9940ecc0a"
-	buyerAddress     = "0x44d952db5dfb4cbb54443554f4bb9cbebee2194c"
-	sellerPriKey     = "e04d9e04569d1de38be6b0dbced9413ebf86d33d3670c6db965726b46de0572a"
-	sellerAddress    = "0xFFF531a2DA46d051FdE4c47F042eE6322407DF3f"
-	exchangerPriKey  = "74960499b76daa6c987fb3872619fe28d875d5c64fd96bbb2b9c0ae676eb2c45"
-	exchangeAddress  = "0x83c43f6F7bB4d8E429b21FF303a16b4c99A59b05"
-	exchangerPriKey1 = "8c9c4464a685583b1ddcb30bfd991444248eb492d10ceca647fdd41329499b49"
-	exchangeAddress1 = "0xB685EB3226d5F0D549607D2cC18672b756fd090c"
+	//endpoint = "http://43.129.181.130:8561"
+	//endpoint = "https://api.erbie.io"
+	endpoint         = "http://192.168.4.240:8560"
+	priAddress       = "0x8724fd5d3e4a63e0017b8a2a4fC775B91166eD8d"
+	priKey           = "50fd980dab6b010c001fcab754421792b451c48706d5bb69ac0ad93ab8dd7aa1"
+	buyerPriKey      = "057b05b9cff85c963c3ab90d26503700646781f938054171461b17ad5f7082db"
+	buyerAddress     = "0xED8cfA91F533C47863E520DE828E2f970c8f52DB"
+	sellerPriKey     = "132a8ed2918b923a91c324d0e22a358ea6a82330a1faf956042f64bce8bf8e46"
+	sellerAddress    = "0xD9DC702C0d3518aa27F82fd75f1a544233a7150f"
+	exchangerPriKey  = "0bbbb60fa9ff05081a3b63aa8b043d1281cd860dc06d92800aee5b1fdf5bc8d7"
+	exchangeAddress  = "0xaECE03150f0A6565e8308E872Bf3Ec143A0b4879"
+	exchangerPriKey1 = "1ba6579ab53049bd9730d644815a49fd065d6626e74862873402a99227564c3d"
+	exchangeAddress1 = "0xC83279D0fEdd3A814aBe250007c61E324Ba467E6"
+	tempAddress      = "0x1f4c00c477651531f5e9F145B317E16c02FE3b1D"
+	tempPriKey       = "474a14156d0a4fec502cd67b62cbc72f14358e84225afb11cc15c8127a43ac40"
 )
 
 func TestNewClient(t *testing.T) {
@@ -42,9 +47,9 @@ func TestRecharge(t *testing.T) {
 // Mint
 // NFT mint 0
 func TestMint(t *testing.T) {
-	worm := client.NewClient(priKey, endpoint)
+	worm := client.NewClient(sellerPriKey, endpoint)
 	//rs, _ := worm.Mint(10, "/ipfs/ddfd90be9408b4", exchangeAddress)
-	rs, _ := worm.Mint(10, "/ipfs/ddfd90be9408b4", "")
+	rs, _ := worm.Mint(10, "/ipfs/Qmf3xw9rEmsjJdQTV3ZcyF4KfYGtxMkXdNQ8YkVqNmLHY8", "")
 	fmt.Println(rs)
 }
 
@@ -113,8 +118,9 @@ func TestSNFTToERB(t *testing.T) {
 // TokenPledge
 // ERB pledge 9
 func TestTokenPledge(t *testing.T) {
-	worm := client.NewClient(priKey, endpoint)
-	rs, _ := worm.TokenPledge([]byte(""), "", 10)
+	worm := client.NewClient(exchangerPriKey1, endpoint)
+	toaddr := common.HexToAddress(exchangeAddress1)
+	rs, _ := worm.TokenPledge(toaddr, "", "exchange", "www.exchange.com", 700, 100)
 	fmt.Println(rs)
 }
 
@@ -123,8 +129,10 @@ func TestTokenPledge(t *testing.T) {
 // TokenRevokesPledge
 // ERB revokes pledge 10
 func TestTokenRevokesPledge(t *testing.T) {
-	worm := client.NewClient(priKey, endpoint)
-	rs, _ := worm.TokenRevokesPledge(10)
+	worm := client.NewClient(tempPriKey, endpoint)
+	toaddr := common.HexToAddress(tempAddress)
+
+	rs, _ := worm.TokenRevokesPledge(toaddr, 1)
 	fmt.Println(rs)
 }
 
@@ -132,21 +140,21 @@ func TestTokenRevokesPledge(t *testing.T) {
 
 // Open
 // Open an exchange 11
-func TestOpen(t *testing.T) {
-	worm := client.NewClient(exchangerPriKey, endpoint)
-	rs, _ := worm.Open(10, "wormholes", "www.kang123456.com")
-	fmt.Println(rs)
-}
+//func TestOpen(t *testing.T) {
+//	worm := client.NewClient(exchangerPriKey, endpoint)
+//	rs, _ := worm.Open(10, "wormholes", "www.kang123456.com")
+//	fmt.Println(rs)
+//}
 
 //0xcccd6c9499224e7d216f3bd230447900550b07345841eebd2e62b613f7bd924f
 
 // Close
 // close a exchange 12
-func TestClose(t *testing.T) {
-	worm := client.NewClient(exchangerPriKey, endpoint)
-	rs, _ := worm.Close()
-	fmt.Println(rs)
-}
+//func TestClose(t *testing.T) {
+//	worm := client.NewClient(exchangerPriKey, endpoint)
+//	rs, _ := worm.Close()
+//	fmt.Println(rs)
+//}
 
 //0x61cd018d6e70af47c6204fea18db5b33fdecc92162cca66b0089783733809e84
 
@@ -346,15 +354,89 @@ func TestVoteOfficialNFTByApprovedExchanger(t *testing.T) {
 }
 
 // ChangeRewardsType
-// change revenue model
+// change revenue model 25
 func TestUnforzenAccount(t *testing.T) {
 	worm := client.NewClient(priKey, endpoint)
 	rs, _ := worm.UnforzenAccount()
 	fmt.Println(rs)
 }
 
+// WeightRedemption
+// restore the weight 26
+func TestWeightRedemption(t *testing.T) {
+	worm := client.NewClient(priKey, endpoint)
+	rs, _ := worm.WeightRedemption()
+	fmt.Println(rs)
+}
+
+// BatchSellTransfer
+// Batch buying and selling of minted NFT or S-Nft 27
+func TestBatchSellTransfer(t *testing.T) {
+	worm := client.NewClient(buyerPriKey, "")
+	buyerauth, err := worm.Wallet.SignBuyerAuth(exchangeAddress, "0x6000")
+	if err != nil {
+		log.Fatalln("Signing failed")
+	}
+
+	worm1 := client.NewClient(sellerPriKey, "")
+	sellerauth, err := worm1.Wallet.SignSellerAuth(exchangeAddress, "0x6000")
+	if err != nil {
+		log.Fatalln("Signing failed")
+	}
+
+	worm2 := client.NewClient(exchangerPriKey, "")
+	exchangeAuth, err := worm2.Wallet.SignExchanger(exchangeAddress, exchangeAddress1, "0x6000")
+	if err != nil {
+		log.Fatalln("Signing failed")
+	}
+
+	worm3 := client.NewClient(exchangerPriKey1, endpoint)
+	buyer, err := worm3.Wallet.SignBuyer("0xde0b6b3a7640000", "0x0000000000000000000000000000000000000001", exchangeAddress, "0x6000", "")
+	if err != nil {
+		log.Fatalln("Signing failed")
+	}
+	seller, err := worm3.Wallet.SignSeller1("0xde0b6b3a7640000", "0x0000000000000000000000000000000000000001", exchangeAddress, "0x6000")
+	if err != nil {
+		log.Fatalln("Signing failed")
+	}
+	rs, _ := worm3.BatchSellTransfer(buyer, seller, buyerauth, sellerauth, exchangeAuth, buyerAddress)
+	fmt.Println(rs)
+}
+
+// ForceBuyingTransfer
+// Compulsory purchase of S-Nft 28
+func TestForceBuyingTransfer(t *testing.T) {
+	worm := client.NewClient(buyerPriKey, "")
+	buyerauth, err := worm.Wallet.SignBuyerAuth(exchangeAddress, "0x6000")
+	if err != nil {
+		log.Fatalln("Signing failed")
+	}
+	buyer, err := worm.Wallet.SignBuyer("", "0x800000000000000000000000000000000000000", exchangeAddress, "0x6000", "")
+	if err != nil {
+		log.Fatalln("Signing failed")
+	}
+
+	worm2 := client.NewClient(exchangerPriKey, "")
+	exchangeAuth, err := worm2.Wallet.SignExchanger(exchangeAddress, exchangeAddress1, "0x6000")
+	if err != nil {
+		log.Fatalln("Signing failed")
+	}
+
+	worm3 := client.NewClient(exchangerPriKey1, endpoint)
+	rs, _ := worm3.ForceBuyingTransfer(buyer, buyerauth, exchangeAuth, buyerAddress)
+	fmt.Println(rs)
+}
+
+// ExtractERB
+// Addresses with L3 can initiate this transaction to withdraw ERB 29
+func TestExtractERB(t *testing.T) {
+	worm := client.NewClient(priKey, endpoint)
+	rs, _ := worm.ExtractERB()
+	fmt.Println(rs)
+}
+
 // AccountDelegate
-// Delegate large accounts to small accounts
+// Delegate large accounts to small accounts 31
 func TestAccountDelegate(t *testing.T) {
 	worm := client.NewClient(priKey, endpoint)
 	proxySign, _ := worm.Wallet.SignDelegate("address", "pledgeAccount")
@@ -455,14 +537,14 @@ func TestGetSNFT(t *testing.T) {
 		address := common.BytesToAddress(Nft.Bytes())
 		res1, _ := worm.GetAccountInfo(context.Background(), address.String(), int64(latest))
 
-		if (*res1).Owner.String() == common.BytesToAddress(Empty.Bytes()).String() {
+		if (*res1).Nft.Owner.String() == common.BytesToAddress(Empty.Bytes()).String() {
 			time.Sleep(time.Second * 5)
 		}
 
 		for ex, pri := range exchanger {
-			fmt.Println((*res1).Owner.String())
+			fmt.Println((*res1).Nft.Owner.String())
 			fmt.Println(ex)
-			if strings.ToLower(ex) == strings.ToLower(res1.Owner.String()) {
+			if strings.ToLower(ex) == strings.ToLower(res1.Nft.Owner.String()) {
 				worms := client.NewClient(pri, "http://192.168.4.240:8561")
 				worms.Transfer(common.BytesToAddress(Nft.Bytes()).String(), collects)
 				break

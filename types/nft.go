@@ -11,26 +11,40 @@ type Account struct {
 	// *** modify to support nft transaction 20211220 begin ***
 	//NFTCount uint64		// number of nft who account have
 	// *** modify to support nft transaction 20211220 end ***
-	Root           common.Hash // merkle root of the storage trie
-	CodeHash       []byte
-	PledgedBalance *big.Int
+	Root     common.Hash // merkle root of the storage trie
+	CodeHash []byte
+	Worm     *WormholesExtension
+	// NFTBalance is the nft number that the account have
+	Nft AccountNFT
+}
+
+type WormholesExtension struct {
+	PledgedBalance     *big.Int
+	PledgedBlockNumber *big.Int
 	// *** modify to support nft transaction 20211215 ***
 	//Owner common.Address
 	// whether the account has a NFT exchanger
-	ExchangerFlag    bool
-	BlockNumber      *big.Int
-	ExchangerBalance *big.Int
-	VoteWeight       *big.Int
+	ExchangerFlag      bool
+	BlockNumber        *big.Int
+	ExchangerBalance   *big.Int
+	SNFTAgentRecipient common.Address
+	VoteBlockNumber    *big.Int
+	VoteWeight         *big.Int
+	Coefficient        uint8
 	// The ratio that exchanger get.
-	FeeRate       uint32
+	FeeRate       uint16
 	ExchangerName string
 	ExchangerURL  string
 	// ApproveAddress have the right to handle all nfts of the account
 	ApproveAddressList []common.Address
 	// NFTBalance is the nft number that the account have
-	NFTBalance uint64
-	Coefficient      uint8
-	AccountNFT
+	//NFTBalance uint64
+	// Indicates the reward method chosen by the miner
+	//RewardFlag uint8 // 0:SNFT 1:ERB default:1
+	SNFTNoMerge     bool
+	LockSNFTFlag    bool
+	NFTBalance      uint64
+	StakerExtension StakersExtensionList
 }
 
 type AccountNFT struct {
@@ -85,3 +99,12 @@ type MinerProxy struct {
 }
 
 type MinerProxyList []*MinerProxy
+
+type StakersExtensionList struct {
+	StakerExtensions []*StakerExtension
+}
+type StakerExtension struct {
+	Addr        common.Address
+	Balance     *big.Int
+	BlockNumber *big.Int
+}
