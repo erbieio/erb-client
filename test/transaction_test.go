@@ -14,9 +14,6 @@ import (
 )
 
 const (
-	//endpoint         = "http://192.168.4.223:8560"
-	//endpoint = "http://43.129.181.130:8561"
-	//endpoint = "https://api.erbie.io"
 	endpoint         = "http://192.168.4.240:8560"
 	priAddress       = "0x8724fd5d3e4a63e0017b8a2a4fC775B91166eD8d"
 	priKey           = "50fd980dab6b010c001fcab754421792b451c48706d5bb69ac0ad93ab8dd7aa1"

@@ -8,7 +8,7 @@ go get github.com/erbieio/erb-client
 
 ## Client
 
-    - ### Create a client
+  - ### Create a client
 
       Initializing the erbie client with Go is the basic steps required to interact with the blockchain.
       Import the erbieio/erb-client package and initialize it by calling the receiving blockchain service provider rawurl.
@@ -17,7 +17,7 @@ go get github.com/erbieio/erb-client
       worm := client.NewClient(priKey, rawurl)
       ```
 
-      #### Example
+  - #### Example
 
       ```
       package main
@@ -38,9 +38,9 @@ go get github.com/erbieio/erb-client
 
 
 
-- ## Signature
+## Signature
 
-    - ### Sign buyer
+  - ### Sign buyer
 
       ```
       SignBuyer(amount, nftAddress, exchanger, blockNumber, seller string) ([]byte, error)
@@ -87,17 +87,17 @@ go get github.com/erbieio/erb-client
       }
       ```
 
-    - ### Sign seller
+  - ### Sign seller
 
-      When conducting NFT transactions, sign the seller information
+    When conducting NFT transactions, sign the seller information
 
-        - #### nft cast
+      - #### nft cast
 
-          ```
-          SignSeller1(amount, nftAddress, exchanger, blockNumber string) ([]byte, error)
-          ```
+         ```
+         SignSeller1(amount, nftAddress, exchanger, blockNumber string) ([]byte, error)
+         ```
 
-          **Params**
+         **Params**
 
           > - *amount:		   The amount the buyer purchased the NFT, formatted as a hexadecimal string*
           > - *nftAddress: The NFT address of the transaction, formatted as a hexadecimal string*
@@ -115,33 +115,33 @@ go get github.com/erbieio/erb-client
           ```
           package main
           import (
-              "github.com/erbieio/erb-client/client"
-              "fmt"
+             "github.com/erbieio/erb-client/client"
+             "fmt"
           )
           
           const (
-              priKey   = "11e4259f98e6a18772be5e1b2e2c9e5b12b4a9fe8e3cfa0853df59fa0825e861"
+             priKey   = "11e4259f98e6a18772be5e1b2e2c9e5b12b4a9fe8e3cfa0853df59fa0825e861"
           )
           
           func main() {
-              worm := client.NewClient(priKey, "")
-                 seller1, err := worm.Wallet.SignSeller1("0x38D7EA4C68000", "0x0000000000000000000000000000000000000003", "0x8b07aff2327a3B7e2876D899caFac99f7AE16B10", "0x65d")
-              if err != nil {
-                  log.Fatalln("Signing failed")
-              }
+             worm := client.NewClient(priKey, "")
+             seller1, err := worm.Wallet.SignSeller1("0x38D7EA4C68000", "0x0000000000000000000000000000000000000003", "0x8b07aff2327a3B7e2876D899caFac99f7AE16B10", "0x65d")
+             if err != nil {
+                log.Fatalln("Signing failed")
+          }
           
-              fmt.Println("sign ", string(seller1))
-              //seller1: { "price":"0x38D7EA4C68000", "nft_address":"0x0000000000000000000000000000000000000003", "exchanger":"0x8b07aff2327a3B7e2876D899caFac99f7AE16B10", "block_number":"0x65d", "sig":"0x94e88fb5686551dfc3006c608423983a248df8502cbbcaeb2c3352f267a25e531d5fc745bea5f7f564b7399fb70d87026bbf9952f1403e9d4dae4aa14b091cff1c" }
+             fmt.Println("sign ", string(seller1))
+             //seller1: { "price":"0x38D7EA4C68000", "nft_address":"0x0000000000000000000000000000000000000003", "exchanger":"0x8b07aff2327a3B7e2876D899caFac99f7AE16B10", "block_number":"0x65d", "sig":"0x94e88fb5686551dfc3006c608423983a248df8502cbbcaeb2c3352f267a25e531d5fc745bea5f7f564b7399fb70d87026bbf9952f1403e9d4dae4aa14b091cff1c" }
           }
           ```
 
-        - #### nft uncast
+      - #### nft uncast
 
-          ```
-          SignSeller2(amount, royalty, metaURL, exclusiveFlag, exchanger, blockNumber string) ([]byte, error)
-          ```
+        ```
+        SignSeller2(amount, royalty, metaURL, exclusiveFlag, exchanger, blockNumber string) ([]byte, error)
+        ```
 
-          **Params**
+        **Params**
 
           > - *amount:		   The amount of the NFT transaction, formatted as a hexadecimal string*
           > - *royalty: royalty, hex string*
@@ -150,92 +150,93 @@ go get github.com/erbieio/erb-client
           > - *exchanger:       The exchange on which the transaction took place, formatted as a decimal string*
           > - *blockNumber: Block height, which means that this transaction is valid before this height, the format is a hexadecimal string*
 
-          **Return**
+        **Return**
 
           `[]byte`  - If the transaction is successful, return the signed byte array; if the signature fails, return nil
 
           `error`   - If the transaction is successful, return nil; if the transaction fails, return the corresponding error
 
-          **Example**
+        **Example**
 
-          ```
-          package main
-          import (
-              "github.com/erbieio/erb-client/client"
-              "fmt"
-          )
+        ```
+        package main
+        import (
+           "github.com/erbieio/erb-client/client"
+           "fmt"
+            )
           
-          const (
-              priKey   = "fc92219d8c663afde9708be321354b9b1c2e67c8680647f73c5bf64ce13cca66"
-          )
+        const (
+           priKey   = "fc92219d8c663afde9708be321354b9b1c2e67c8680647f73c5bf64ce13cca66"
+        )
           
-          func main() {
-              worm := client.NewClient(priKey, "")
-                 seller2, err := worm1.Wallet.SignSeller2("0x38D7EA4C68000", "0xa", "/ipfs/qqqqqqqqqq", "0", exchangeAddress, "0x7be")
-              if err != nil {
-                  log.Fatalln("Signing failed")
-              }
-          
-              fmt.Println("sign ", string(seller2))
-              //seller2: {"price":"0x38D7EA4C68000","royalty":"0xa","meta_url":"/ipfs/qqqqqqqqqq","exclusive_flag":"0","exchanger":"0x83c43f6F7bB4d8E429b21FF303a16b4c99A59b05","block_number":"0x7be","sig":"0x84c0c293298557e38fa5064a6fb3b9e6930fa46b234fcd0a923cd677369f5aad3f014a164b21077f713e25b4e986673f614f6ce824561fbda2b4e67e018fac6f1b"}
-          ```
-
-    - ### Sign Exchange
-
-      ```
-      SignExchanger(exchangerOwner, to, blockNumber string) ([]byte, error)
-      ```
-
-      When conducting NFT transactions, sign the exchange information
-
-      **Params**
-
-      > - *exchangerOwner: Authorize exchange, formatted as a hexadecimal string*
-      > - *to:      Authorized exchange, formatted as a hexadecimal string*
-      > - *blockNumber: Block height, which means that this transaction is valid before this height, the format is a hexadecimal string*
-
-      **Return**
-
-      `[]byte`  - If the transaction is successful, return the signed byte array; if the signature fails, return nil
-
-      `error`   - If the transaction is successful, return nil; if the transaction fails, return the corresponding error
-
-      **Example**
-
-      ```
-      package main
-      import (
-          "github.com/erbieio/erb-client/client"
-          "fmt"
-      )
-      
-      const (
-          priKey   = "ea86b620d97c256434fabbc46a3350cadd42019d7a5953914a8fc1e1093f214c"
-      )
-      
-      func main() {
-          worm := client.NewClient(priKey, "")
-             exchangeAuth, err := worm2.Wallet.SignExchanger(exchangeAddress, exchangeAddress1, "0x26")
-          if err != nil {
+        func main() {
+           worm := client.NewClient(priKey, "")
+           seller2, err := worm1.Wallet.SignSeller2("0x38D7EA4C68000", "0xa", "/ipfs/qqqqqqqqqq", "0", exchangeAddress, "0x7be")
+           if err != nil {
               log.Fatalln("Signing failed")
-          }
-      
-          fmt.Println("sign ", string(exchangeAuth))
-          //exchangerAuth:	{"exchanger_owner":"0x83c43f6F7bB4d8E429b21FF303a16b4c99A59b05","to":"0xB685EB3226d5F0D549607D2cC18672b756fd090c","block_number":"0x26","sig":"0x8c1706b407f50ed5cec8a392eac5f66f0338e9cf4eb71a465dc264ac7e315d2068f6061dfec02ee6b6f7f1150d1594c829436c36bc49c806ee5f5b4ad04e43631c"}
-      ```
-
-  - ## NFT interface
-
-      - ### NormalTransaction
+           }
+          
+           fmt.Println("sign ", string(seller2))
+           //seller2: {"price":"0x38D7EA4C68000","royalty":"0xa","meta_url":"/ipfs/qqqqqqqqqq","exclusive_flag":"0","exchanger":"0x83c43f6F7bB4d8E429b21FF303a16b4c99A59b05","block_number":"0x7be","sig":"0x84c0c293298557e38fa5064a6fb3b9e6930fa46b234fcd0a923cd677369f5aad3f014a164b21077f713e25b4e986673f614f6ce824561fbda2b4e67e018fac6f1b"}
+        }
+        ```
+         
+      - ### Sign Exchange
 
         ```
-        NormalTransaction(to string, value int64, data string) (string, error)
+        SignExchanger(exchangerOwner, to, blockNumber string) ([]byte, error)
         ```
+
+        When conducting NFT transactions, sign the exchange information
 
         **Params**
 
+          > - *exchangerOwner: Authorize exchange, formatted as a hexadecimal string*
+          > - *to:      Authorized exchange, formatted as a hexadecimal string*
+          > - *blockNumber: Block height, which means that this transaction is valid before this height, the format is a hexadecimal string*
+ 
+        **Return**
+
+        `[]byte`  - If the transaction is successful, return the signed byte array; if the signature fails, return nil
+
+        `error`   - If the transaction is successful, return nil; if the transaction fails, return the corresponding error
+
+        **Example**
+
+        ```
+        package main
+        import (
+            "github.com/erbieio/erb-client/client"
+            "fmt"
+        )
+      
+        const (
+            priKey   = "ea86b620d97c256434fabbc46a3350cadd42019d7a5953914a8fc1e1093f214c"
+        )
+      
+        func main() {
+            worm := client.NewClient(priKey, "")
+               exchangeAuth, err := worm2.Wallet.SignExchanger(exchangeAddress, exchangeAddress1, "0x26")
+            if err != nil {
+                log.Fatalln("Signing failed")
+            }
+      
+            fmt.Println("sign ", string(exchangeAuth))
+            //exchangerAuth:	{"exchanger_owner":"0x83c43f6F7bB4d8E429b21FF303a16b4c99A59b05","to":"0xB685EB3226d5F0D549607D2cC18672b756fd090c","block_number":"0x26","sig":"0x8c1706b407f50ed5cec8a392eac5f66f0338e9cf4eb71a465dc264ac7e315d2068f6061dfec02ee6b6f7f1150d1594c829436c36bc49c806ee5f5b4ad04e43631c"}
+        ```
+
+  - ## NFT interface
+
+    - ### NormalTransaction
+
+      ```
+      NormalTransaction(to string, value int64, data string) (string, error)
+      ```
+
+      **Params**
+
       >   - *to:         transaction recipient*
-      >   - value:       transaction value*
+      >   - *value:       transaction value*
       >   - *data:       transaction data*
 
         **Return**
@@ -265,18 +266,18 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### Mint
+    - ### Mint
 
-        ```
-        Mint(royalty uint32, metaURL string, exchanger string) (string, error)
-        ```
+      ```
+      Mint(royalty uint32, metaURL string, exchanger string) (string, error)
+      ```
 
         Implement NFT minting, create an NFT on the ErbieChain
 
         **Params**
 
       >   - *royalty:         Royalty, formatted as an integer*
-      >   - metaURL:       NFT metadata address, formatted as string*
+      >   - *metaURL:       NFT metadata address, formatted as string*
       >   - *exchanger:  The exchange when the NFT is minted, the format is a string. When this field is filled, the exchange will exclusively own the NFT. If it is not filled in, no exchange will exclusively own the NFT*
 
         **Return**
@@ -306,7 +307,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### Transfer
+    - ### Transfer
 
         ```
         Transfer(nftAddress, to string) (string, error)
@@ -346,7 +347,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### Author
+    - ### Author
 
         ```
         Author(nftAddress, to string) (string, error)
@@ -387,7 +388,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### AuthorRevoke
+    - ### AuthorRevoke
 
         ```
         AuthorRevoke(nftAddress, to string) (string, error)
@@ -427,7 +428,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### AccountAuthor
+    - ### AccountAuthor
 
         ```
         AccountAuthor(to string) (string, error)
@@ -466,7 +467,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### AccountAuthorRevoke
+    - ### AccountAuthorRevoke
 
         ```
         AccountAuthorRevoke(to string) (string, error)
@@ -505,7 +506,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### SNFTToERB
+    - ### SNFTToERB
 
         ```
         SNFTToERB(nftAddress string) (string, error)
@@ -544,7 +545,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### TokenPledge
+    - ### TokenPledge
 
         ```
         TokenPledge() (string, error)
@@ -579,7 +580,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### TokenRevokesPledge
+    - ### TokenRevokesPledge
 
         ```
         TokenRevokesPledge() (string, error)
@@ -614,7 +615,7 @@ go get github.com/erbieio/erb-client
         }
         ```
       
-      - ### InsertNFTBlock
+    - ### InsertNFTBlock
 
         ```
         InsertNFTBlock(dir, startIndex string, number uint64, royalty uint32, creator string) (string, error)
@@ -657,7 +658,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### TransactionNFT
+    - ### TransactionNFT
 
         ```
         TransactionNFT(buyer []byte, to string) (string, error)
@@ -697,7 +698,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### BuyerInitiatingTransaction
+    - ### BuyerInitiatingTransaction
 
         ```
         BuyerInitiatingTransaction(seller1 []byte) (string, error)
@@ -737,7 +738,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### FoundryTradeBuyer
+    - ### FoundryTradeBuyer
 
         ```
          FoundryTradeBuyer(seller2 []byte) (string, error)
@@ -777,7 +778,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### FoundryExchange
+    - ### FoundryExchange
 
         ```
          FoundryExchange(buyer, seller2 []byte, to string) (string, error)
@@ -818,7 +819,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### NftExchangeMatch
+    - ### NftExchangeMatch
 
         ```
          NftExchangeMatch(buyer, exchangerAuth []byte, to string) (string, error)
@@ -859,7 +860,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### FoundryExchangeInitiated
+    - ### FoundryExchangeInitiated
 
         ```
          FoundryExchangeInitiated(buyer, seller2, exchangerAuthor []byte, to string) (string, error)
@@ -901,7 +902,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### FtDoesNotAuthorizeExchanges
+    - ### FtDoesNotAuthorizeExchanges
 
         ```
          FtDoesNotAuthorizeExchanges(buyer, seller1 []byte, to string) (string, error)
@@ -942,7 +943,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### AdditionalPledgeAmount
+    - ### AdditionalPledgeAmount
 
         ```
          AdditionalPledgeAmount(value int64) (string, error)
@@ -981,7 +982,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### RevokesPledgeAmount
+    - ### RevokesPledgeAmount
 
         ```
          RevokesPledgeAmount(value int64) (string, error)
@@ -1019,7 +1020,7 @@ go get github.com/erbieio/erb-client
             fmt.Println(rs) //0xd2c7f943f0f5364b0928c518e7b6de7491c0e8efb6abf912a17e6860f70ebec1
         }
         ```
-      - ### VoteOfficialNFT
+    - ### VoteOfficialNFT
 
         ```
         VoteOfficialNFT(dir, startIndex string, number uint64, royalty uint32, creator string) (string, error)
@@ -1061,7 +1062,7 @@ go get github.com/erbieio/erb-client
           fmt.Println(rs) //0x61cd018d6e70af47c6204fea18db5b33fdecc92162cca66b0089783733809e84
         }
         ```
-      - ### VoteOfficialNFTByApprovedExchanger
+    - ### VoteOfficialNFTByApprovedExchanger
         
         ```
         VoteOfficialNFTByApprovedExchanger(dir, startIndex string, number uint64, royalty uint32, creator string, exchangerAuth []byte) (string, error)
@@ -1105,7 +1106,7 @@ go get github.com/erbieio/erb-client
         }
         ```
 
-      - ### UnforzenAccount
+    - ### UnforzenAccount
 
         ```
         UnforzenAccount() (string, error)
@@ -1140,7 +1141,7 @@ go get github.com/erbieio/erb-client
         }
         ```
       
-      - ### WeightRedemption
+    - ### WeightRedemption
 
         ```
         WeightRedemption() (string, error)
@@ -1175,7 +1176,7 @@ go get github.com/erbieio/erb-client
         }
         ```
       
-      - ### BatchSellTransfer
+    - ### BatchSellTransfer
 
         ```
         BatchSellTransfer(buyer, seller, buyerAuth, sellerAuth, exchangerAuth []byte, to string) (string, error)  
@@ -1218,7 +1219,7 @@ go get github.com/erbieio/erb-client
            fmt.Println(rs)
         }
         ```
-      - ### ForceBuyingTransfer
+    - ### ForceBuyingTransfer
 
         ```
         ForceBuyingTransfer(buyer, buyerAuth, exchangerAuth []byte, to string) (string, error)
@@ -1259,7 +1260,7 @@ go get github.com/erbieio/erb-client
            fmt.Println(rs)
         }
         ```
-      - ### ExtractERB
+    - ### ExtractERB
 
         ```
         ExtractERB() (string, error)    
@@ -1294,7 +1295,7 @@ go get github.com/erbieio/erb-client
         }
         ```
           
-      - ### AccountDelegate
+    - ### AccountDelegate
 
         ```
         AccountDelegate(proxyAddress string) (string, error)
@@ -1308,27 +1309,27 @@ go get github.com/erbieio/erb-client
 
         **Return**
 
-        `string`  - If the transaction is successful, return the hash of the transaction; if the transaction fails, return nil
+          `string`  - If the transaction is successful, return the hash of the transaction; if the transaction fails, return nil
 
-        `error`   - If the transaction is successful, return nil; if the transaction fails, return the corresponding error
+          `error`   - If the transaction is successful, return nil; if the transaction fails, return the corresponding error
 
         **Example**
 
-            ```
-            package main
-            import (
-             "github.com/erbieio/erb-client/client"
-             "fmt"
-            )
+        ```
+        package main
+        import (
+          "github.com/erbieio/erb-client/client"
+          "fmt"
+        )
       
-            const (
-             endpoint = "http://192.168.4.237:8574"
-             priKey   = "b2ebd0889351eb22dc73c3a02c63e783794a9de3f578d6d07bb370cc112d2ec7"
-            )
+        const (
+          endpoint = "http://192.168.4.237:8574"
+          priKey   = "b2ebd0889351eb22dc73c3a02c63e783794a9de3f578d6d07bb370cc112d2ec7"
+        )
     
-            func main() {
-             worm := client.NewClient(priKey, endpoint)
-             rs, _ := worm.AccountDelegate("0x814920c33b1a037F91a16B126282155c6F92A10F")
-             fmt.Println(rs)
-            }
-            ```
+        func main() {
+          worm := client.NewClient(priKey, endpoint)
+          rs, _ := worm.AccountDelegate("0x814920c33b1a037F91a16B126282155c6F92A10F")
+          fmt.Println(rs)
+        }
+        ```
