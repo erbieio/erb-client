@@ -1,4 +1,4 @@
-module github.com/erbieio/erb-client
+module github.com/rossoman/erb-client
 
 go 1.20
 
