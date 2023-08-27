@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/erbieio/erb-client/client"
+	"github.com/rossoman/erb-client/client"
 	"github.com/ethereum/go-ethereum/common"
 )
 

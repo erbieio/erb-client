@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/erbieio/erb-client/tools"
+	"github.com/rossoman/erb-client/tools"
 	"testing"
 )
 

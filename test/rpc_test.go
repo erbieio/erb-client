@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/erbieio/erb-client/client"
+	"github.com/rossoman/erb-client/client"
 	"math/rand"
 	"testing"
 	"time"

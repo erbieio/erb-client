@@ -8,8 +8,8 @@ import (
 	"log"
 	"math/big"
 
-	"github.com/erbieio/erb-client/tools"
-	types2 "github.com/erbieio/erb-client/types"
+	"github.com/rossoman/erb-client/tools"
+	types2 "github.com/rossoman/erb-client/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/core/types"
